@@ -1,0 +1,263 @@
+﻿@model IEnumerable<BackUpSoftware.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="container" style="margin-top:50px;">
+
+    <div class="row">
+
+        <div class="col-sm-2">
+
+            @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-primary" })
+
+           
+        </div>
+
+        <div class="col-sm-8 col-sm-offset-2">
+
+ 
+
+            <input id="myInput" type="text" placeholder="Search.." class="form-control" style="max-width:100%;">
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+        <hr />
+        <div class="col-sm-12">
+            <table class="table table-bordered table-responsive table-hover table-striped sortable" id="">
+                <thead style="background-color:#2980b9;">
+                    <tr>
+                        <th>
+                            FirstName
+                        </th>
+                        <th>
+                            LastName
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Password
+                        </th>
+                        <th>
+                            Contact
+                        </th>
+                        <th>
+                            Country
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+
+                    @foreach (var item in Model)
+                    {
+                        if(item.FirstName!="admin")
+                        {
+                        <tr id=@item.Id>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Contact)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country)
+                            </td>
+                            <td>
+                                @if (item.Status == false)
+                                {
+
+                                    @Html.ActionLink("Block", "BlockUser", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("UnBlock", "UnBlock", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+                                }
+                            </td>
+                            <td>
+                                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |*@
+                             @*   @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |*@
+                                <button type="button" class="btn btn-primary" onclick="return EditUser(@item.Id)">Edit</button>
+                                
+                                <button  class="btn btn-primary" onclick="return UserDetails(@item.Id)" >Details</button>
+                                
+                                <button class="btn btn-primary"  onclick="return confirm(@item.Id)">Delete</button>
+                            </td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+
+       
+    </div>
+</div>
+
+<!--User Detail Modal-->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="DetailModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">User Details</h2>
+                </div>
+                <div class="modal-body">
+                  
+
+                    <div>
+                  
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label  class="modal-lbl">FirstName:</label>
+                            </dt>
+
+                            <dd>
+                                <label id="detail-firstname"></label>
+                            </dd>
+
+                            <dt>
+                                <label class="modal-lbl">LastName:</label>
+                            </dt>
+
+                            <dd>
+                                <label id="detail-lastname"></label>
+                            </dd>
+
+                            <dt>
+                                <label class="modal-lbl">Email:</label>
+                            </dt>
+
+                            <dd>
+                                <label id="detail-email"></label>
+                            </dd>
+
+                            <dt>
+                                <label class="modal-lbl">Password:</label>
+                            </dt>
+
+                            <dd>
+                                <label id="detail-password"></label>
+                            </dd>
+
+                            <dt>
+                                <label class="modal-lbl">Contact:</label>
+                            </dt>
+
+                            <dd>
+                                <label id="detail-contact"></label>
+                            </dd>
+
+                            <dt>
+                                <label class="modal-lbl">country:</label>
+                            </dt>
+                                 
+                            <dd>
+                                <label id="detail-country"></label>
+                            </dd>
+
+
+
+
+
+                        </dl>
+                    </div>
+                    
+</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+<!--User Edit Modal-->
+<!-- Modal -->
+<div class="modal fade" id="EditModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Edit User</h2>
+            </div>
+
+       @using (Html.BeginForm("Edit", "Admin",FormMethod.Post))
+        {
+
+            <div class="modal-body">
+                <input type="hidden" id="Id" name="Id" value="">
+                <div class="form-group">
+                    <label class="modal-lbl">FirstName</label>
+                    <input type="text" class="form-control  modal-input" name="FirstName" id="FirstName" />
+                    <label class="question-label"></label>
+                </div>
+                <div class="form-group">
+                    <label class="modal-lbl">LastName</label>
+                    <input type="text" class="form-control  modal-input" name="LastName"  id="LastName" />
+                    <label class="question-label"></label>
+                </div>
+                <div class="form-group">
+                    <label class="modal-lbl">Email</label>
+                    <input type="text" class="form-control  modal-input" name="Email"  id="Email"  readonly/>
+                    <label class="question-label"></label>
+                </div>
+                <div class="form-group">
+                    <label class="modal-lbl">Password</label>
+                    <input type="text" class="form-control  modal-input" name="Password"  id="Password" />
+                    <label class="question-label"></label>
+                </div>
+                <div class="form-group">
+                    <label class="modal-lbl">Contact</label>
+                    <input type="text" class="form-control  modal-input" name="Contact"  id="Contact" />
+                    <label class="question-label"></label>
+                </div>
+
+                <div class="form-group">
+                    <label class="modal-lbl">Country</label>
+                    <input type="text" class="form-control  modal-input" name="Country"  id="Country" />
+                    <label class="question-label"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit">Submit</button>
+            </div>
+         }
+        </div>
+        
+    </div>
+</div>

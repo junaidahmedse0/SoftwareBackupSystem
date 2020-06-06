@@ -1,0 +1,89 @@
+﻿@using System.Drawing.Imaging
+@using System.IO;
+@model BackUpSoftware.ViewModel.FolderViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+  
+    <div class="view-account">
+        <section class="module">
+            <div class="module-inner">
+                <div class="side-bar">
+                    <div class="user-info">
+                        <img class="img-profile img-circle img-responsive center-block" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                        <ul class="meta list list-unstyled">
+                            <li class="name">
+                            @Model.User.FirstName
+                           
+                            <li class="email"><a href="#">@Model.User.Email</a></li>
+            
+                        
+                        </ul>
+                    </div>
+                    <nav class="side-menu">
+                        <ul class="nav">
+                            <!--<li><a href="#"><span class="fa fa-user"></span> Profile</a></li>
+                            <li><a href="#"><span class="fa fa-cog"></span> Settings</a></li>
+                            <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
+                            <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
+                            <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li>
+                       
+                            <li class="active"><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>-->
+                         </ul>
+                    </nav>
+                </div>
+
+                <div class="content-panel">
+                    @{ 
+                        Html.RenderPartial("DetailPartial");
+                    }
+                </div>
+             
+            </div>
+        </section>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h2>Index</h2>
+
+@using (Html.BeginForm("Index","User",FormMethod.Post,new {@enctype="multipart/form-data"}))
+{
+    <input type="file" name="file" />
+    <br/>
+    <input type="submit" value="Save"/>
+
+}
+
+<h1>@ViewBag.fileuploaded</h1>
+
+<div>
+    <a href="/user/download">download</a>
+</div>*@
+

@@ -1,0 +1,154 @@
+﻿<div class="content-header-wrapper">
+    <h2 class="title">My Drive</h2>
+    <div class="actions">
+        <button class="btn btn-success " data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>Create Folder</button>
+        <button class="btn btn-success" data-toggle="modal" data-target="#fileupload"><i class="fa fa-plus"></i>Upload New Item</button>
+        
+    </div>
+</div>
+<div class="content-utilities">
+    <div class="page-nav">
+          <a href="/user/index" class="btn btn-primary" ><span class="btn-label"><i class="glyphicon glyphicon-chevron-left"></i></span>Home</a>
+     </div>
+    <div class="actions">
+        <label style="color:red;"> @ViewBag.ErrorMessage</label>
+        @*<div class="btn-group">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false">All Items <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-file"></i> Documents</a></li>
+                <li><a href="#"><i class="fa fa-file-image-o"></i> Images</a></li>
+                <li><a href="#"><i class="fa fa-file-video-o"></i> Media Files</a></li>
+                <li><a href="#"><i class="fa fa-folder"></i> Folders</a></li>
+                
+            </ul>
+        </div>*@
+        @*<div class="btn-group">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false"><i class="fa fa-filter"></i> Sorting <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Newest first</a></li>
+                <li><a href="#">Oldest first</a></li>
+            </ul>
+        </div>*@
+        @*<div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Refresh"><i class="fa fa-refresh"></i></button>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Archive"><i class="fa fa-archive"></i></button>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Report spam"><i class="fa fa-exclamation-triangle"></i></button>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Delete"><i class="fa fa-trash-o"></i></button>
+         
+  
+        </div>*@
+    </div>
+  
+</div>
+<div class="drive-wrapper drive-grid-view">
+    @foreach (var item in Model.Folders)
+    {
+        <div class="drive-item module text-center">
+            <div class="drive-item-inner module-inner">
+                <div class="drive-item-title"><a href="#">@Path.GetFileName(item)</a></div>
+                <div class="drive-item-thumb">
+                    <a href="/user/index?path=@item"><i class="fa fa-folder text-primary"></i></a>
+                </div>
+            </div>
+            <div class="drive-item-footer module-footer">
+                <ul class="utilities list-inline">
+                    <li>Delete</li>
+                    <li><a href="/user/DeleteFolder?path=@item&folderpath=@Model.Path" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+    }
+
+   @foreach (var item in Model.Files)
+   {
+
+    <div class="grid-items-wrapper">
+            <div class="drive-item module text-center">
+                <div class="drive-item-inner module-inner">
+                    <div class="drive-item-title"><a href="#">@Path.GetFileName(item)</a></div>
+              
+                    <div class="drive-item-thumb">
+                        <a href="@item.Replace(@"C:\Users\Junaid Ahmed\Documents\Visual Studio 2015\Projects\BackUpSoftware3\BackUpSoftware","").Replace(@"\","/")"><i class="fa fa-file-text-o text-primary"></i></a>
+                        @*<a href="~/Data/fiki.mp4"><i class="fa fa-file-text-o text-primary"></i></a>*@
+                   
+                     </div>
+                </div>
+                <div class="drive-item-footer module-footer">
+                    <ul class="utilities list-inline">
+                        <li><a href="/user/Download?path=@item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Download"><i class="fa fa-download"></i></a></li>
+                        <li><a href="/user/DeleteFile?path=@item&filepath=@Model.Path" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="fa fa-trash"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+   }
+   
+</div>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+@using (Html.BeginForm("CreateFolder", "User", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Folder</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+
+                <div class="form-group">
+                    <label for="usr">Name:</label>
+                    <input type="text" class="form-control" id="foldername" name="foldername">
+                </div>
+                
+                <input type="hidden" id="folderPath" name="folderPath" value="@Model.Path">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" >Create</button>
+            </div>
+        </div>
+}
+    </div>
+
+</div>
+<div id="fileupload" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+@using (Html.BeginForm("Index", "User", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">File Upload</h4>
+            </div>
+            <div class="modal-body">
+               
+               
+                    <input type="file" name="file" />
+                    <br />
+                   <input type="hidden" id="folderPath" name="folderPath" value="@Model.Path">
+                    @*<input type="submit" value="Save" />*@
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+}
+    </div>
+
+</div>
+
+
