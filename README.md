@@ -28,8 +28,7 @@ the system.
 
 
 
-
-![](images/software1.PNG)
+![](images/software2.PNG)
 
 
 
@@ -56,6 +55,5 @@ gets downloaded into local system
 
 
 
-
-![](images/software2.PNG)
+![](images/software1.PNG)
 
